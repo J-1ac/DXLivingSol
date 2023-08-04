@@ -11,6 +11,6 @@
   Data Flow Diagram
 </p><br>
 <p align="center">
-  <img src="순서도.png" alt="Flow Chart"><br>
+  <img src="순서도.jpg" alt="Flow Chart"><br>
   Flow Chart
 </p><br>

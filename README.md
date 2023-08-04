@@ -6,3 +6,11 @@
   <img src="topic.jpg" alt="주제설명 및 해결 제안"><br>
   주제 설명 및 해결 제안
 </p><br>
+<p align="center">
+  <img src="데이터흐름다이어그램.jpg" alt="Data Flow Diagram"><br>
+  Data Flow Diagram
+</p><br>
+<p align="center">
+  <img src="순서도.png" alt="Flow Chart"><br>
+  Flow Chart
+</p><br>

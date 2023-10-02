@@ -1,16 +1,18 @@
 # DXLivingSol
-## PCBA와 Serial통신을 이용한 가정 세탁 시뮬레이터를 통한 결함 예상 및 분석<br>
+```
+PCBA와 Serial 통신을 이용한 세탁기 시뮬레이터의 알고리즘 구현 및 결함 분석 도구 개발
+```
 
-세탁기와 같은 가전을 가동시 각 부하별로 여러 가지 결함이 발생할 수 있다. 이는 전체 시스템에 일시적, 또는 영구적인 결함을 연쇄적으로 유발할 수 있다. 이를 방지하기 위해 세탁기의 각종 부하를 가상화하고 PCBA에 시리얼 통신으로 부하의 동작을 대체 전달하여 부하 없이 사이클을 동작해 제작 전에 미리 예방하고자 한다. <br>
-<p align="center">
-  <img src="etc/topic.jpg" alt="주제설명 및 해결 제안"><br>
-  주제 설명 및 해결 제안
-</p><br>
-<p align="center">
-  <img src="etc/데이터흐름다이어그램.jpg" alt="Data Flow Diagram"><br>
-  Data Flow Diagram
-</p><br>
-<p align="center">
-  <img src="etc/순서도.jpg" alt="Flow Chart"><br>
-  Flow Chart
-</p><br>
+## 목적
+- 세탁기와 같은 가전을 가동시 각 부하별로 여러 가지 결함이 발생할 수 있다. 이는 전체 시스템에 일시적, 또는 영구적인 결함을 연쇄적으로 유발할 수 있다. 이를 방지하기 위해 세탁기의 각종 부하를 가상화하고 PCBA에 시리얼 통신으로 부하의 동작을 대체 전달하여 부하 없이 사이클을 동작해 제작 전에 미리 예방하고자 한다.
+
+## 실행영상
+- TBD... (실행 영상 링크를 여기에 추가.)
+
+## 참고자료
+  - 주제 설명 및 해결 제안
+  ![주제설명 및 해결 제안](etc/topic.jpg)
+  - 데이터 흐름 다이어그램
+  ![Data Flow Diagram](etc/데이터흐름다이어그램.jpg)
+  - Flow Chart
+  ![Flow Chart](etc/순서도.jpg)

@@ -13,9 +13,11 @@ PCBA와 Serial 통신을 이용한 세탁기 시뮬레이터의 알고리즘 구
 - [YouTube실행영상](https://youtu.be/bB6cmc3nSY0?si=chS73sMcWqd9CaW8)
 
 ## 참고자료
-  - 주제 설명 및 해결 제안
+  - 주제 설명 및 해결 제안<br>
   ![주제설명 및 해결 제안](etc/topic.jpg)
-  - 데이터 흐름 다이어그램
+  - 데이터 흐름 다이어그램<br>
   ![Data Flow Diagram](etc/데이터흐름다이어그램.jpg)
-  - Flow Chart
+  - Flow Chart<br>
   ![Flow Chart](etc/순서도.jpg)
+  - [결과보고서](etc/결과보고서.hwp)
+  - [발표자료](etc/결과PPT.pdf)

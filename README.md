@@ -1,4 +1,4 @@
-# DXLivingSol
+# DXLivingSol - 뉴갈매기팀
 ```
 PCBA와 Serial 통신을 이용한 세탁기 시뮬레이터의 알고리즘 구현 및 결함 분석 도구 개발
 ```

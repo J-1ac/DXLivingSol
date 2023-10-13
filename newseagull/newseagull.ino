@@ -2,7 +2,6 @@
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <math.h>
-
 #define STX 85
 #define ETX 170
 #define ACK 6
@@ -44,8 +43,6 @@ uint8_t celsius[8] = {0x3,0x3,0x0,0x0,0x0,0x0,0x0,0x0};
 bool cpros=false; //현재 세탁상태
 float water_volume=0; //물의 양
 float temperature=890; //물온도 
-
-
 
 int rm(int remain, int val){ // val = cwf, cwt 등, remain 값에 따라 1을 더하거나 빼줌
   if(remain>10){
@@ -93,22 +90,22 @@ void Printstate(int timecnt){
   uint16_t cwf=send[2]*256+send[3], cwt=maucReceiveBuffer[85], rpm=send[17]*256+send[18];
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("WaterFreq: ");
+  lcd.print("WaterFreq: ");             //물높이 lcd 출력
   lcd.print(cwf);
 
   lcd.setCursor(0, 1);
-  lcd.print("Waterwater_volume: ");
+  lcd.print("WaterVolume: ");           //물부피 lcd 출력
   lcd.print(water_volume/1000);
   lcd.print(" L");
 
   lcd.setCursor(0, 2);
-  lcd.print("WashTemp: ");
+  lcd.print("WashTemp: ");              //물온도 lcd 출력
   lcd.print(cwt);
   lcd.write(byte(1));
   lcd.print("C");
 
   lcd.setCursor(0, 3);
-  lcd.print("RequestRPM: ");
+  lcd.print("RequestRPM: ");            //요구 모터 RPM lcd 출력
   lcd.print(rpm);
   
   print_wf_flowlcd(2550-cwf, 450, 0);
@@ -120,7 +117,7 @@ void WaterVolumeandTemp(int timecnt) {
   if(timecnt%5!=0) return;
   int cnt=0, ccnt=0, hcnt=0;
   float static calorie=0, water_500ms=312.0;    //열용량, 들어오는 물의 양 ml
-  /*물 부피*/
+  // 물 부피 계산과정
   if(BIT_89[0]==1) cnt++;
   if(BIT_89[2]==1) cnt++;
   if(BIT_89[3]==1) cnt++;
@@ -132,7 +129,7 @@ void WaterVolumeandTemp(int timecnt) {
     water_volume=0;
   }
   
-  /*온도*/
+  // 물 온도 계산과정
   if(BIT_89[2]==1) ccnt++;
   if(BIT_89[3]==1) ccnt++;
   if(BIT_89[4]==1) ccnt++;
@@ -142,9 +139,7 @@ void WaterVolumeandTemp(int timecnt) {
   if(calorie<0) calorie=0;
     
   temperature=calorie/water_volume;
-  if(water_volume==0.0) temperature=890; //890 13도 0 105도
-  Serial.print("calorie : ");
-  Serial.println(calorie);  
+  if(water_volume==0.0) temperature=890; //890-> 섭씨13도,  0-> 섭씨 105도 (최소, 최댓값)
 }
 
 void WaterTemp(int timecnt) {
@@ -174,7 +169,7 @@ void WaterFreq(int timecnt) {
     }
   }
     
-  if(cwf>2550) cwf=2550; //배속으로 인한 초과를 제어
+  if(cwf>2550) cwf=2550; //물높이 초과를 제어
   if(cwf<2100) cwf=2100;
   
   send[2]=uint16_t(cwf)/256; 

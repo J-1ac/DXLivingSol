@@ -44,7 +44,9 @@ bool cpros=false; //현재 세탁상태
 float water_volume=0; //물의 양
 float temperature=890; //물온도 
 
-int rm(int remain, int val){ // val = cwf, cwt 등, remain 값에 따라 1을 더하거나 빼줌
+int rm(int remain, int val){ 
+  // 소수점 반올림 처리 함수.
+  // val = cwf, cwt 등, remain 값에 따라 1을 더하거나 빼줌
   if(remain>10){
     remain-=10;
     val+=1;
@@ -57,6 +59,7 @@ int rm(int remain, int val){ // val = cwf, cwt 등, remain 값에 따라 1을 �
 }
 
 void GetBit(uint8_t val89, uint8_t val91) {
+  // uint8_t의 val에서 1bit씩 읽어오는 함수
   if(maucReceiveBuffer[3]!=1) return;
   for(int i=0;i<=7;i++){
     BIT_89[i]=val89%2;
@@ -68,6 +71,7 @@ void GetBit(uint8_t val89, uint8_t val91) {
 }
 
 void print_wf_flowlcd(uint16_t wf, uint16_t max, uint16_t min){
+  // 물높이를 lcd에 출력하는 함수
   uint16_t flowcnt = (max-min)/20;
   int fullflow = (wf-min)/flowcnt, remainflow = (wf-min)%flowcnt/5;
   wf_flowlcd.clear();
@@ -85,6 +89,7 @@ void print_wf_flowlcd(uint16_t wf, uint16_t max, uint16_t min){
 }
 
 void Printstate(int timecnt){
+  // 여러 상태를 lcd에 출력하는 함수 (물높이, 물부피, 물온도, 모터  RPM)
   if(timecnt%2!=0) return;
   if(maucReceiveBuffer[3]!=1) return;
   uint16_t cwf=send[2]*256+send[3], cwt=maucReceiveBuffer[85], rpm=send[17]*256+send[18];
@@ -114,6 +119,7 @@ void Printstate(int timecnt){
 }
 
 void WaterVolumeandTemp(int timecnt) {
+  //물 부피 및 물 온도를 계산하는 함수
   if(timecnt%5!=0) return;
   int cnt=0, ccnt=0, hcnt=0;
   float static calorie=0, water_500ms=312.0;    //열용량, 들어오는 물의 양 ml
@@ -143,6 +149,7 @@ void WaterVolumeandTemp(int timecnt) {
 }
 
 void WaterTemp(int timecnt) {
+  // 물 온도 유효성 검사 및 send에 저장하는 함수.
   if(timecnt%5!=0) return;
   float cwt = temperature;
 
@@ -153,6 +160,7 @@ void WaterTemp(int timecnt) {
 }
 
 void WaterFreq(int timecnt) {
+  // 물 부피를 물 높이로 변환해 send에 저장하는 함수.
   if(timecnt%5!=0) return;
   float cwf=0;
   float temp=0;
@@ -179,6 +187,7 @@ void WaterFreq(int timecnt) {
 }
 
 void IPMTemp(int timecnt){
+  // 모터 IPM의 온도를 계산하는 함수
   if (maucReceiveBuffer[3]==0){
     if(maucReceiveBuffer[98] == 10) {cpros = true; } //현재상태: 탈수
     else                            {cpros = false;} //현재상태: 그외
@@ -208,6 +217,7 @@ void IPMTemp(int timecnt){
 }
 
 void SteamTemp(int timecnt) {
+  // steam의 온도를 계산하는 함수
   if(timecnt%5!=0) return;
   uint16_t stetem=send[8]*256 + send[9];
   static int remain=0;
@@ -228,6 +238,7 @@ void SteamTemp(int timecnt) {
 }
 
 void SteamVoltage(int timecnt){
+  // steamvoltage 계산하는 함수
   if(timecnt%5!=0) return;
   int mode=0; uint16_t slv=send[12]*256+send[13], ssv=send[14]*256+send[15];
   if(BIT_89[6]==1){
@@ -242,13 +253,15 @@ void SteamVoltage(int timecnt){
 }
         
 uint16_t MAKE2BYTE(uint8_t num_1, uint8_t num_2){
+  // uint8_t 두개를 인자로 받아 1개의 uint16_t로 반환하는 함수
   uint16_t r=0;
   r+=num_1*256;
   r+=num_2;
   return r;
 }
 
-uint16_t CRC_Maker(uint8_t buffer[], uint8_t length){    //crc check 함수
+uint16_t CRC_Maker(uint8_t buffer[], uint8_t length){    
+  // crc check 함수
   uint8_t i=0;
   uint16_t crc=0, temp=0, quick=0;
   for(i=0; i<length; i++){
@@ -264,7 +277,8 @@ uint16_t CRC_Maker(uint8_t buffer[], uint8_t length){    //crc check 함수
   return crc;
 }
 
-uint8_t PacketError_Check(uint8_t a_u8PacketLength){         //packet check for receive
+uint8_t PacketError_Check(uint8_t a_u8PacketLength){         
+  //수신시 packet error를 확인하는 함수
   uint16_t lrc_result = 0;
   uint16_t temp_int = 0;
   lrc_result = CRC_Maker(&(maucReceiveBuffer[0]), (uint8_t)(a_u8PacketLength - 3));
@@ -280,7 +294,8 @@ uint8_t PacketError_Check(uint8_t a_u8PacketLength){         //packet check for 
   }
 }
 
-uint8_t PacketError_Check_1(uint8_t a_u8PacketLength){        //packet check for send
+uint8_t PacketError_Check_1(uint8_t a_u8PacketLength){        
+  //송신시 packet error를 확인하는 함수
   uint16_t lrc_result = 0;
   uint16_t temp_int = 0;
   lrc_result = CRC_Maker(&(send[0]), (uint8_t)(a_u8PacketLength - 3));
@@ -297,6 +312,7 @@ uint8_t PacketError_Check_1(uint8_t a_u8PacketLength){        //packet check for
 }
 
 void Update_LED(void){
+  // led에 현재 상태를 출력하는 함수
   digitalWrite(COLD_WASH_VALVE, BIT_89[4]);
   digitalWrite(HOT_WASH_VALVE, BIT_89[0]);
   digitalWrite(PRE_WASH_VALVE, BIT_89[3]);
@@ -310,12 +326,14 @@ void Update_LED(void){
 }
 
 void Update_RX_Data(void){
+  // 수신시 led를 갱신하는 함수
   send[17]=maucReceiveBuffer[13];   //update requestrpm
   send[18]=maucReceiveBuffer[14];
   Update_LED();
 }
 
 void Update_TX_Data (void) {
+  // 송신값 갱신 함수
   static uint8_t uc100msTimer = 0;
   uc100msTimer++;
   if (uc100msTimer > 10){
@@ -333,6 +351,7 @@ void Update_TX_Data (void) {
 }
 
 void Virtualization_BigFL() {
+  // 전반적인 가상의 세탁 과정을 처리하는 함수
   if(mySerial.available() > 0){
     if (mySerial.peek() != STX) {
       while(mySerial.available()) mySerial.read();
